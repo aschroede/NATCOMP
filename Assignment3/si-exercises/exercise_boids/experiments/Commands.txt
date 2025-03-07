@@ -1,0 +1,5 @@
+HighCohesion Experiment
+-----------------------
+
+node node-boids-template.js -f 400 -N 50 -i 10 -o 100 -c 1 -s 1 -a
+ 1 -T 1000 -I experiments/HighCohesion/images/  > experiments/HighCohesion/output.csv

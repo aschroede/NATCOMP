@@ -265,6 +265,8 @@ class Particle {
 		for (let n of neighbors){
 			avg = this.addVectors(avg, n.dir)
 		}
+
+		avg = this.multiplyVector(avg, 1/neighbors.length)
 		
 		return this.normalizeVector(avg)
 	}
@@ -280,7 +282,8 @@ class Particle {
 		let avg = [0,0]
 		// Find average position
 		for (let n of neighbors){
-			avg = this.addVectors(avg, n.pos)
+			const wrappedePos = this.S.wrap(n.pos, this.pos)	
+			avg = this.addVectors(avg, wrappedePos)
 		}
 
 		// Find center of mass
@@ -312,11 +315,8 @@ class Particle {
 		// Make sure to update the properties this.dir and this.pos accordingly.
 		// What happens when the new position lies across the field boundary? 
 		
-		this.pos = this.addVectors(this.pos, this.multiplyVector(this.dir,this.speed))
+		this.pos = this.S.wrap(this.addVectors(this.pos,this.dir))
 		this.dir = this.normalizeVector(this.addVectors(this.dir, this.addVectors(align, this.addVectors(cohesion, separation))))
-
-		this.pos = this.S.wrap(this.pos)
-		
 	}
 	
 }

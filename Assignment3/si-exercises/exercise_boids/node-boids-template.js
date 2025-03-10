@@ -55,6 +55,8 @@ class Particle {
 		for (let n of neighbors){
 			avg = this.addVectors(avg, n.dir)
 		}
+
+		avg = this.multiplyVector(avg, 1/neighbors.length)
 		
 		return this.normalizeVector(avg)
 	}
@@ -70,7 +72,8 @@ class Particle {
 		let avg = [0,0]
 		// Find average position
 		for (let n of neighbors){
-			avg = this.addVectors(avg, n.pos)
+			const wrappedePos = this.S.wrap(n.pos, this.pos)	
+			avg = this.addVectors(avg, wrappedePos)
 		}
 
 		// Find center of mass
@@ -102,15 +105,11 @@ class Particle {
 		// Make sure to update the properties this.dir and this.pos accordingly.
 		// What happens when the new position lies across the field boundary? 
 		
-		this.pos = this.addVectors(this.pos, this.multiplyVector(this.dir,this.speed))
+		this.pos = this.S.wrap(this.addVectors(this.pos,this.dir))
 		this.dir = this.normalizeVector(this.addVectors(this.dir, this.addVectors(align, this.addVectors(cohesion, separation))))
-
-		this.pos = this.S.wrap(this.pos)
-		
 	}
 	
 }
-
 
 /* =========  you don't need to touch this bit. */
 
@@ -478,7 +477,7 @@ for( let t = 0; t <= conf.runTime; t++ ){
 		fs.appendFileSync(`${metricsPath}/orderParameter.csv`, `${S.time},${op}\n`)
 
 		const nn = S.getNearestNeighbourDistances()
-		fs.appendFileSync(`${metricsPath}/nearestNeighborParameter.csv`, `${S.time},${nn}\n`)
+        fs.appendFileSync(`${metricsPath}/nearestNeighborParameter.csv`, `${S.time},"${JSON.stringify(nn)}"\n`);
 	}
 	
 	S.step()

@@ -1,0 +1,3 @@
+node node-boids-template.js -f 400 -N 200 -i 10 -o 100 -c 1 -s 1 -a 1 -T 500 -I experiments/HighCohesion/images/ -M experiments/HighCohesion > experiments/HighCohesion/output.csv
+python3 experiments/orderParamAnalysis.py experiments/HighCohesion experiments/HighCohesion/Metrics/
+python3 experiments/nnAnalysis.py experiments/HighCohesion/nearestNeighborParameter.csv experiments/HighCohesion/Metrics
